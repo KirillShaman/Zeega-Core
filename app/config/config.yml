@@ -91,6 +91,13 @@ sensio_framework_extra:
     view:
         annotations: false
 
+sonata_admin:
+    templates:
+        # default global templates
+        layout:  ZeegaAdminBundle::standard_layout.html.twig
+        ajax:    ZeegaAdminBundle::ajax_layout.html.twig
+
+
 sonata_block:
     default_contexts: [cms]
     blocks:

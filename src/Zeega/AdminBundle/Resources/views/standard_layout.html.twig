@@ -20,15 +20,17 @@ file that was distributed with this source code.
 {% set _title        = block('title') %}
 {% set _breadcrumb   = block('breadcrumb') %}
 
-        {% block header_extras %}
-			<!-- 
+        {% block stu %}
+			
             <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
 
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/bootstrap.min.css') }}" type="text/css" media="all" >
 			
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
--->
+			<link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
+			<!-- 
 			<link rel="stylesheet" media="screen" type="text/css" href="{{ asset('css/zeega-admin.css')}}" />
+			-->
         {% endblock %}
 
         {% block scripts %}
@@ -58,6 +60,12 @@ file that was distributed with this source code.
                 <div class="topbar-inner">
                     <div class="container-fluid">
                         {% if admin_pool is defined %}
+                            {% block logo %}
+                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
+                                    <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}" />
+                                    {{ admin_pool.title }}
+                                </a>
+                            {% endblock %}
                             <ul class="nav">
                                 {% for group in admin_pool.dashboardgroups %}
                                     <li class="dropdown">

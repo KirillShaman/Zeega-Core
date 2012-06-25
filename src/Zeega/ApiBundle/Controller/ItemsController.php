@@ -243,6 +243,19 @@ class ItemsController extends Controller
         $em->persist($item);
         $em->flush();
         
+        $databaseType = $this->container->getParameter('database_type');
+        
+        if(isset($databaseType) && $databaseType == 'pgsql')
+        {
+	        $latitude = $item->getMediaGeoLatitude();
+	        $longitude = $item->getMediaGeoLongitude();
+        	
+        	if(isset($latitude) && isset($longitude))
+        	{
+        		$em->getRepository('ZeegaDataBundle:Item')->updateItemGeoLatLng($item->getId());
+        	}
+        }
+        
         $itemView = $this->renderView('ZeegaApiBundle:Items:show.json.twig', array('item' => $item));
         return ResponseHelper::compressTwigAndGetJsonResponse($itemView);
     }
@@ -287,7 +300,9 @@ class ItemsController extends Controller
 	    $item = $this->populateItemWithRequestData($requestData);
         $em->persist($item);
         $em->flush();
-
+		
+		$databaseType = $this->container->getParameter('database_type');
+        
         $itemView = $this->renderView('ZeegaApiBundle:Items:show.json.twig', array('item' => $item));
         return ResponseHelper::compressTwigAndGetJsonResponse($itemView);       
     }
@@ -449,9 +464,12 @@ class ItemsController extends Controller
 		}
 		
         $item = new Item();
+        $isUpdate = false;
+        
         if(isset($id))
         {
             $item = $em->getRepository('ZeegaDataBundle:Item')->find($id);
+            $isUpdate = true;
         }
         else
         {
@@ -533,6 +551,22 @@ class ItemsController extends Controller
                     $first = False;
                 }
             }
+        }
+        
+        if($isUpdate)
+        {
+        	$databaseType = $this->container->getParameter('database_type');
+        
+        	if(isset($databaseType) && $databaseType == 'pgsql')
+        	{
+	        	$latitude = $item->getMediaGeoLatitude();
+	        	$longitude = $item->getMediaGeoLongitude();
+        	
+        		if(isset($latitude) && isset($longitude))
+        		{
+        			$em->getRepository('ZeegaDataBundle:Item')->updateItemGeoLatLng($item->getId());
+        		}
+        	}
         }
         
         return $item;

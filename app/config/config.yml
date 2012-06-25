@@ -46,6 +46,7 @@ twig:
         hostname: %hostname%
         directory: %directory%
         web_directory: %web_directory%
+        database_type: %database_type%
 
 # Assetic Configuration
 assetic:

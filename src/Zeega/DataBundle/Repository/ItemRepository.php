@@ -351,6 +351,13 @@ class ItemRepository extends EntityRepository
 		return $query->getArrayResult();
 	}
 	
+	public function updateItemGeoLatLng($itemId)
+	{	
+		$conn = $this->getEntityManager()->getConnection();
+		$count = $conn->executeUpdate("UPDATE item SET geo_latlng = GeometryFromText( 'POINT(' || media_geo_longitude || ' ' || media_geo_latitude || ')', 4269) where id = ?", array($itemId));
+		return $count;
+	}
+	
 	
 	public function findItems($query,$returnTotalItems = false)
 	{
